@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+powerfn<-function(trials,null,alt,alpha){ 
+  n=ceiling(trials)
+  critical=qbinom(p=alpha,size=n,prob=null) -1
+  power=pbinom(q=critical,size=n,prob=alt) }
+```
+
+```{r}
+library(ggplot2)
+n_1 <- seq(from=50,to=1000,by=50)
+power_1 <- powerfn(n, 1/3, 1/4, 0.05)
+
+ggplot(mapping=aes(x=n_1,y=power_1))+ 
+  geom_line() +
+  labs(x=expression("Sample size"),
+  y=expression("Power"), 
+  title=expression("How the power depends on sample size"))
+```
+
+```{r}
+n_2 <- seq(from=0,to=1/3,by=0.01)
+power_2 <- powerfn(100, 1/3, n_2, 0.05)
+
+ggplot(mapping=aes(x=n_2,y=power_2))+ 
+  geom_line() +
+  labs(x=expression("Alternative probability"),
+  y=expression("Power"), 
+  title=expression("How the power depends on the alternative probability"))
+```
+
+```{r}
+n_3 <- seq(from=0, to=1,by=0.001)
+power_3 <- powerfn(100, 1/3, 1/4, n_3)
+
+ggplot(mapping=aes(x=n_3,y=power_3))+ 
+  geom_line() +
+  labs(x=expression("Significance level"),
+  y=expression("Power"), 
+  title=expression("How the power depends on the significance level"))
+```
